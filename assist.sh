@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Constants
+DOCKER_COMPOSE_FILE="${PWD}/docker-compose.yml"
+
 # Colors for console output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -24,7 +27,7 @@ function print_success() {
 function start_services() {
     echo "Starting prometheus and Grafana services..."
 
-    if ! docker-compose -f "${PWD}/docker-compose.yml" up -d prometheus grafana loki promtail; then
+    if ! docker-compose -f "$DOCKER_COMPOSE_FILE" up -d prometheus grafana loki promtail; then
         print_error "Error starting services. Please check if the ports are available or try restarting Docker."
         exit 1
     fi
@@ -33,13 +36,13 @@ function start_services() {
 # Function to stop services
 function stop_services() {
     echo "Stopping prometheus and Grafana services..."
-    docker-compose -f "${PWD}/docker-compose.yml" down
+    docker-compose -f "$DOCKER_COMPOSE_FILE" down
     print_success "Services stopped successfully!"
 }
 
 # Function to check services status
 function services_status() {
-    docker-compose -f "${PWD}/docker-compose.yml" ps
+    docker-compose -f "$DOCKER_COMPOSE_FILE" ps
 }
 
 # Function to check if a service is operational
@@ -74,8 +77,8 @@ function display_grafana_info() {
 # Function to run the K6 load test
 function run_k6_test() {
    echo "Running K6 load test..."
-   #K6_BROWSER_ENABLED=true K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM=true k6 run -o experimental-prometheus-rw --tag testid=12345 scripts/tests/all.js
-   #K6_BROWSER_ENABLED=true K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM=true k6 run -o experimental-prometheus-rw --tag testid=12345 scripts/tests/loginFlowTest.js
+   # K6_BROWSER_ENABLED=true K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM=true k6 run -o experimental-prometheus-rw --tag testid=12345 scripts/tests/all.js
+   # K6_BROWSER_ENABLED=true K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM=true k6 run -o experimental-prometheus-rw --tag testid=12345 scripts/tests/loginFlowTest.js
    K6_BROWSER_HEADLESS=false K6_BROWSER_ENABLED=true K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM=true k6 run -o experimental-prometheus-rw --tag testid=15082023 
 }
 
