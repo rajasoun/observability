@@ -1,0 +1,80 @@
+version: '3.8'
+
+# Define services for the application.
+services:
+  
+  # Grafana service configuration.
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    networks:
+      - monitoring
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_USER=admin
+    volumes:
+      - ./grafana:/etc/grafana/provisioning/
+
+  # Prometheus service configuration.
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    ports:
+      - "9090:9090"
+    command:
+      - --web.enable-remote-write-receiver
+      - --enable-feature=native-histograms
+      - --config.file=/etc/prometheus/prometheus.yml
+    networks:
+      - monitoring
+    volumes:
+      - prometheus_data:/prometheus
+
+  # Loki service configuration.
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - monitoring
+    volumes:
+      - loki_data:/loki
+
+  # Promtail service configuration.
+  promtail:
+    image: grafana/promtail:latest
+    command: -config.file=/etc/promtail/config.yml
+    volumes:
+      - /var/log:/var/log
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./promtail/promtail-config.yaml:/etc/promtail/config.yml
+    networks:
+      - monitoring
+    depends_on:
+      - loki
+
+  # k6 service configuration.
+  k6:
+    build: xk6
+    ports:
+      - "6565:6565"
+    networks:
+      - monitoring
+    environment:
+      - K6_PROMETHEUS_RW_SERVER_URL=http://prometheus:9090/api/v1/write
+      - K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM=true
+      - K6_OUT=xk6-prometheus-rw
+    volumes:
+      - ./samples:/scripts
+    depends_on:
+      - prometheus
+
+# Define volumes for the services.
+volumes:
+  loki_data: {}
+  prometheus_data: {}
+
+# Define networks used by the services.
+networks:
+  monitoring:
