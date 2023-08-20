@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 
-# Constants
-DOCKER_COMPOSE_FILE="${PWD}/docker-compose.yml"
+# Get the directory of the currently executing script
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Check if the directory path contains the string "observability"
+if [[ $DIR == *observability* ]]; then
+    DOCKER_COMPOSE_FILE="${DIR}/docker-compose.yml"
+else
+    DOCKER_COMPOSE_FILE="${DIR}/observability/docker-compose.yml"
+fi
 
 # Colors for console output
 RED='\033[0;31m'
