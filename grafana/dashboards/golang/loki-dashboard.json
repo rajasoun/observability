@@ -102,7 +102,7 @@
             "uid": "P8E80F9AEF21F6940"
           },
           "editorMode": "code",
-          "expr": "sum(count_over_time({testid=~\"$testid\", job=~\"$job\"} |~ \"$loglevel\"[$__interval]))",
+          "expr": "sum(count_over_time({testid=~\"$testid\", job=~\"$job\",user_email=~\"$user_email\"} |~ \"$loglevel\"[$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
@@ -138,7 +138,7 @@
             "uid": "P8E80F9AEF21F6940"
           },
           "editorMode": "code",
-          "expr": "{testid=~\"$testid\", job=~\"$job\"} |~ \"(?i)$loglevel\"",
+          "expr": "{testid=~\"$testid\", job=~\"$job\",user_email=~\"$user_email\"} |~ \"(?i)$loglevel\"",
           "queryType": "range",
           "refId": "A"
         }
@@ -213,6 +213,36 @@
         "sort": 0,
         "type": "query"
       },
+      {
+        "allValue": ".+",
+        "current": {
+          "selected": false,
+          "text": "User",
+          "value": "All"
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "P8E80F9AEF21F6940"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": "User",
+        "multi": false,
+        "name": "user_email",
+        "options": [],
+        "query": {
+          "label": "user_email",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },      
       {
         "current": {
           "selected": false,
