@@ -102,7 +102,7 @@
             "uid": "P8E80F9AEF21F6940"
           },
           "editorMode": "code",
-          "expr": "sum(count_over_time({testid=~\"$testid\", job=~\"$job\"} |~ \"$search\"[$__interval]))",
+          "expr": "sum(count_over_time({testid=~\"$testid\", job=~\"$job\"} |~ \"$loglevel\"[$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
@@ -138,7 +138,7 @@
             "uid": "P8E80F9AEF21F6940"
           },
           "editorMode": "code",
-          "expr": "{testid=~\"$testid\", job=~\"$job\"} |~ \"(?i)$search\"",
+          "expr": "{testid=~\"$testid\", job=~\"$job\"} |~ \"(?i)$loglevel\"",
           "queryType": "range",
           "refId": "A"
         }
@@ -221,9 +221,9 @@
         },
         "hide": 0,
         "includeAll": false,
-        "label": "Search Term",
+        "label": "Log Level",
         "multi": false,
-        "name": "search",
+        "name": "loglevel",
         "options": [
           {
             "selected": false,
