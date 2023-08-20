@@ -227,13 +227,13 @@
         "options": [
           {
             "selected": false,
-            "text": "ERROR|FATAL",
+            "text": "ERROR+FATAL",
             "value": "ERROR|FATAL"
           },
           {
             "selected": false,
-            "text": "WARN|ERROR|FATAL",
-            "value": "WARN|ERROR|FATAL"
+            "text": "FATAL",
+            "value": "FATAL"
           },
           {
             "selected": false,
@@ -261,7 +261,7 @@
             "value": ".+"
           }
         ],
-        "query": "ERROR|FATAL,WARN|ERROR|FATAL,ERROR,WARN,INFO,DEBUG,.+",
+        "query": "ERROR+FATAL|FATAL,ERROR,WARN,INFO,DEBUG,.+",
         "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
